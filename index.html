@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Лонгрид о Web 3.0 и семантической трансформации интернета">
+    <meta name="author" content="Альхасан Хасан, ИДМ-25-04">
+    <title>Web 3.0 и Семантическая трансформация | Лонгрид</title>
+    
+    <!-- Google Fonts - Distinctive Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==================== CSS VARIABLES ==================== */
+        :root {
+            --primary-dark: #0a0e27;
+            --primary-blue: #1a237e;
+            --accent-cyan: #00e5ff;
+            --accent-purple: #7c4dff;
+            --accent-orange: #ff6e40;
+            --text-light: #e8eaf6;
+            --text-muted: #9fa8da;
+            --card-bg: rgba(26, 35, 126, 0.15);
+            --border-glow: rgba(0, 229, 255, 0.3);
+            
+            --font-display: 'Orbitron', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --font-body: 'IBM Plex Sans', sans-serif;
+            
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* ==================== GLOBAL RESET ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #1a1a2e 50%, var(--primary-blue) 100%);
+            background-attachment: fixed;
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated Background Grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        /* ==================== HEADER & HERO ==================== */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 6vw, 5rem);
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(120deg, var(--accent-cyan), var(--accent-purple), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleAppear 1.2s ease-out;
+        }
+        
+        @keyframes titleAppear {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-subtitle {
+            font-family: var(--font-code);
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            animation: titleAppear 1.4s ease-out;
+            animation-delay: 0.2s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+        
+        .author-info {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            animation: titleAppear 1.6s ease-out;
+            animation-delay: 0.4s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+        
+        .author-info strong {
+            color: var(--accent-cyan);
+            font-family: var(--font-code);
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: var(--accent-cyan);
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+        
+        /* ==================== TABLE OF CONTENTS ==================== */
+        .toc-section {
+            max-width: 900px;
+            margin: 4rem auto;
+            padding: 3rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 229, 255, 0.1);
+        }
+        
+        .toc-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--accent-cyan);
+            margin-bottom: 2rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .toc-list {
+            list-style: none;
+        }
+        
+        .toc-item {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+        
+        .toc-item::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent-purple);
+            font-size: 1.2rem;
+            transition: var(--transition-smooth);
+        }
+        
+        .toc-item:hover::before {
+            color: var(--accent-cyan);
+            transform: translateX(5px);
+        }
+        
+        .toc-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            display: inline-block;
+        }
+        
+        .toc-link:hover {
+            color: var(--accent-cyan);
+            transform: translateX(10px);
+        }
+        
+        /* ==================== MAIN CONTENT CONTAINER ==================== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        /* ==================== SECTION STYLING ==================== */
+        .content-section {
+            margin: 6rem 0;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: sectionAppear 0.8s ease-out forwards;
+        }
+        
+        @keyframes sectionAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section-header {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--accent-orange);
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--accent-purple);
+            position: relative;
+        }
+        
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: var(--accent-cyan);
+            animation: lineGrow 1.5s ease-out;
+        }
+        
+        @keyframes lineGrow {
+            from { width: 0; }
+            to { width: 100px; }
+        }
+        
+        .subsection-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: var(--accent-cyan);
+            margin: 3rem 0 1.5rem;
+            font-weight: 700;
+        }
+        
+        .content-text {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--text-light);
+            margin: 1.5rem 0;
+            text-align: justify;
+        }
+        
+        .content-text strong {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+        
+        /* ==================== LISTS ==================== */
+        .styled-list {
+            list-style: none;
+            margin: 2rem 0;
+            padding-left: 1rem;
+        }
+        
+        .styled-list li {
+            margin: 1rem 0;
+            padding-left: 2.5rem;
+            position: relative;
+            font-size: 1.05rem;
+        }
+        
+        .styled-list li::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            color: var(--accent-purple);
+            font-size: 1.2rem;
+        }
+        
+        /* ==================== TABLES ==================== */
+        .data-table {
+            width: 100%;
+            margin: 2rem 0;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .data-table thead {
+            background: linear-gradient(135deg, var(--accent-purple), var(--primary-blue));
+        }
+        
+        .data-table th {
+            padding: 1.2rem;
+            text-align: left;
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .data-table tbody tr {
+            background: var(--card-bg);
+            transition: var(--transition-smooth);
+        }
+        
+        .data-table tbody tr:hover {
+            background: rgba(124, 77, 255, 0.15);
+            transform: scale(1.01);
+        }
+        
+        .data-table td {
+            padding: 1.2rem;
+            border-bottom: 1px solid var(--border-glow);
+            color: var(--text-light);
+        }
+        
+        .data-table td:first-child {
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+        
+        /* ==================== MEDIA PLACEHOLDERS ==================== */
+        .media-placeholder {
+            margin: 3rem 0;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.1), rgba(0, 229, 255, 0.1));
+            border: 2px dashed var(--border-glow);
+            border-radius: 16px;
+            text-align: center;
+            transition: var(--transition-smooth);
+        }
+        
+        .media-placeholder:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
+        }
+        
+        .media-placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--accent-purple);
+        }
+        
+        .media-placeholder-title {
+            font-family: var(--font-code);
+            font-size: 1.3rem;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .media-placeholder-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* ==================== BLOCKQUOTES ==================== */
+        .expert-quote {
+            margin: 3rem 0;
+            padding: 2rem 2.5rem;
+            background: var(--card-bg);
+            border-left: 4px solid var(--accent-orange);
+            border-radius: 8px;
+            font-style: italic;
+            color: var(--text-light);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        
+        .expert-quote::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 5rem;
+            color: var(--accent-purple);
+            opacity: 0.3;
+            font-family: Georgia, serif;
+        }
+        
+        /* ==================== EXTERNAL LINKS ==================== */
+        .reference-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            padding: 0.5rem 1rem;
+            background: var(--card-bg);
+            border-radius: 6px;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            border: 1px solid transparent;
+        }
+        
+        .reference-link:hover {
+            background: rgba(0, 229, 255, 0.1);
+            border-color: var(--accent-cyan);
+            transform: translateX(5px);
+        }
+        
+        .reference-link::after {
+            content: '↗';
+            font-size: 1.2rem;
+        }
+        
+        /* ==================== CONCLUSION SECTION ==================== */
+        .conclusion-section {
+            margin: 6rem 0 4rem;
+            padding: 4rem 3rem;
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(255, 110, 64, 0.2));
+            border: 2px solid var(--accent-purple);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(124, 77, 255, 0.3);
+        }
+        
+        .conclusion-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--accent-orange);
+            text-align: center;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .key-takeaways {
+            list-style: none;
+            margin: 2rem 0;
+        }
+        
+        .key-takeaways li {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-left: 4px solid var(--accent-cyan);
+            border-radius: 8px;
+            font-size: 1.05rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .key-takeaways li strong {
+            color: var(--accent-cyan);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.15rem;
+        }
+        
+        /* ==================== FOOTER ==================== */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(10, 14, 39, 0.8);
+            border-top: 2px solid var(--accent-cyan);
+            margin-top: 6rem;
+        }
+        
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-author {
+            color: var(--accent-cyan);
+            font-family: var(--font-code);
+            font-weight: 600;
+        }
+        
+        /* ==================== RESPONSIVE DESIGN ==================== */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 2rem 1rem;
+            }
+            
+            .data-table {
+                font-size: 0.85rem;
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 0.8rem;
+            }
+            
+            .toc-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                flex-direction: column !important;
+                align-items: flex-start;
+                padding-left: 50px;
+            }
+            
+            .timeline-content {
+                width: 100%;
+            }
+            
+            .timeline-dot {
+                left: 20px;
+                transform: translateX(0);
+            }
+            
+            .back-to-top {
+                width: 50px;
+                height: 50px;
+                bottom: 1rem;
+                right: 1rem;
+            }
+            
+            .reference-link {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+            
+            .info-card {
+                padding: 1.5rem;
+            }
+            
+            .accordion-header {
+                padding: 1rem;
+            }
+            
+            .accordion-title {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .section-header {
+                font-size: 1.8rem;
+            }
+            
+            .subsection-title {
+                font-size: 1.4rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .stat-label {
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* ==================== SMOOTH SCROLL PADDING ==================== */
+        html {
+            scroll-padding-top: 2rem;
+        }
+        
+        /* ==================== PRINT STYLES ==================== */
+        @media print {
+            .back-to-top,
+            .reading-progress,
+            .scroll-indicator {
+                display: none;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .content-section {
+                page-break-inside: avoid;
+            }
+        }
+        /* ==================== PROGRESS BAR ==================== */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-orange));
+            z-index: 9999;
+            transition: width 0.1s ease-out;
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+        
+        /* ==================== FLOATING BACK TO TOP BUTTON ==================== */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(124, 77, 255, 0.5);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 30px rgba(0, 229, 255, 0.6);
+        }
+        
+        /* ==================== ENHANCED ANIMATIONS ==================== */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* ==================== INTERACTIVE CARDS ==================== */
+        .info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .info-card:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 8px 40px rgba(0, 229, 255, 0.2);
+            transform: translateY(-5px);
+        }
+        
+        .info-card:hover::before {
+            left: 100%;
+        }
+        
+        .info-card-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+        
+        /* ==================== STATISTICS COUNTER ==================== */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .stat-box {
+            background: var(--card-bg);
+            border: 2px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition-smooth);
+        }
+        
+        .stat-box:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 40px rgba(124, 77, 255, 0.4);
+        }
+        
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            color: var(--accent-orange);
+            font-weight: 900;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* ==================== TIMELINE ==================== */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+            margin: 3rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple));
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+        
+        .timeline-content {
+            width: 45%;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px var(--accent-cyan);
+        }
+        
+        /* ==================== ACCORDION ==================== */
+        .accordion-item {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--card-bg);
+        }
+        
+        .accordion-header {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(26, 35, 126, 0.3);
+            transition: var(--transition-smooth);
+        }
+        
+        .accordion-header:hover {
+            background: rgba(124, 77, 255, 0.2);
+        }
+        
+        .accordion-title {
+            font-family: var(--font-code);
+            font-size: 1.1rem;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+        
+        .accordion-icon {
+            font-size: 1.5rem;
+            color: var(--accent-purple);
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            padding: 0 1.5rem;
+        }
+        
+        .accordion-item.active .accordion-content {
+            max-height: 1000px;
+            padding: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="progressBar"></div>
+    
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">↑</div>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero-section">
+        <h1 class="hero-title">Web 3.0 и Семантическая трансформация</h1>
+        <p class="hero-subtitle">Как технологии переопределяют социальную идентичность?</p>
+        <div class="author-info">
+            <p><strong>Студент:</strong> Альхасан Хасан (Альхасан Х.) | <strong>Группа:</strong> ИДМ-25-04</p>
+            <p><strong>Университет:</strong> МГТУ «СТАНКИН» | <strong>Дисциплина:</strong> Интернет-технологии</p>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </section>
+
+    <!-- ==================== TABLE OF CONTENTS ==================== -->
+    <section class="toc-section">
+        <h2 class="toc-title">Оглавление</h2>
+        <ul class="toc-list">
+            <li class="toc-item"><a href="#section1" class="toc-link">Раздел 1: Эпоха цифровой конвергенции</a></li>
+            <li class="toc-item"><a href="#section2" class="toc-link">Раздел 2: Семантическая паутина (Semantic Web)</a></li>
+            <li class="toc-item"><a href="#section3" class="toc-link">Раздел 3: Децентрализованные социальные сети (DeSo)</a></li>
+            <li class="toc-item"><a href="#conclusion" class="toc-link">Заключение: Будущее доверия и смысла</a></li>
+        </ul>
+    </section>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <div class="container">
+
+        <!-- ==================== SECTION 1 ==================== -->
+        <section id="section1" class="content-section">
+            <h2 class="section-header">Раздел 1: Эпоха цифровой конвергенции</h2>
+            
+            <h3 class="subsection-title">1.1. Текущее состояние ИКТ</h3>
+            <p class="content-text">
+                Современное развитие <strong>информационно-коммуникационных технологий (ИКТ)</strong> и <strong>интернет-технологий (ИТ)</strong> характеризуется беспрецедентным ускорением и конвергенцией технологий. Технологии стали не просто инструментами, а инфраструктурной основой, формирующей «Цифровую экономику» и «Четвертую промышленную революцию» (Индустрия 4.0).
+            </p>
+            
+            <p class="content-text"><strong>Ключевые технологические элементы:</strong></p>
+            <ul class="styled-list">
+                <li><strong>Высокоскоростные сети (5G/6G):</strong> Обеспечивают мгновенную связь и обработку огромных объемов данных.</li>
+                <li><strong>Интернет Вещей (IoT):</strong> Повсеместное распространение подключенных устройств, генерирующих данные.</li>
+                <li><strong>Искусственный интеллект (ИИ) и Машинное обучение (МО):</strong> Способность обрабатывать Большие Данные (Big Data) в реальном времени и формировать киберфизические системы.</li>
+            </ul>
+            
+            <p class="content-text"><strong>Ключевые социальные элементы:</strong></p>
+            <p class="content-text">
+                Технологии трансформировали повседневную жизнь, сделав <strong>децентрализацию</strong>, <strong>конфиденциальность</strong> и <strong>владение данными</strong> основными социальными требованиями, что является ответом на централизованную модель Web 2.0.
+            </p>
+            
+            <!-- Media Element 1: Web 2.0 vs Web 3.0 Comparison -->
+            <div class="visual-diagram" id="diagram1" style="margin: 3rem 0; padding: 2rem; background: linear-gradient(135deg, rgba(26, 35, 126, 0.1), rgba(124, 77, 255, 0.1)); border: 2px solid var(--border-glow); border-radius: 16px; backdrop-filter: blur(10px);">
+                <h4 style="text-align: center; color: var(--accent-cyan); font-family: var(--font-display); margin-bottom: 2rem;">
+                    Сравнение Web 2.0 и Web 3.0
+                </h4>
+                
+                <svg viewBox="0 0 800 400" style="width: 100%; height: auto; filter: drop-shadow(0 4px 20px rgba(0, 229, 255, 0.2));">
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#1a237e;stop-opacity:0.3" />
+                            <stop offset="100%" style="stop-color:#7c4dff;stop-opacity:0.3" />
+                        </linearGradient>
+                    </defs>
+                    
+                    <rect x="20" y="50" width="350" height="320" fill="url(#grad1)" rx="15" stroke="#00e5ff" stroke-width="2"/>
+                    <text x="195" y="85" text-anchor="middle" fill="#00e5ff" font-size="24" font-weight="bold">WEB 2.0</text>
+                    
+                    <circle cx="195" cy="150" r="40" fill="#ff6e40" opacity="0.8"/>
+                    <text x="195" y="160" text-anchor="middle" fill="white" font-size="16">SERVER</text>
+                    
+                    <circle cx="120" cy="130" r="20" fill="#9fa8da" opacity="0.8"/>
+                    <circle cx="270" cy="130" r="20" fill="#9fa8da" opacity="0.8"/>
+                    <circle cx="120" cy="240" r="20" fill="#9fa8da" opacity="0.8"/>
+                    <circle cx="270" cy="240" r="20" fill="#9fa8da" opacity="0.8"/>
+                    
+                    <line x1="140" y1="135" x2="165" y2="145" stroke="#00e5ff" stroke-width="2"/>
+                    <line x1="250" y1="135" x2="225" y2="145" stroke="#00e5ff" stroke-width="2"/>
+                    <line x1="140" y1="235" x2="175" y2="185" stroke="#00e5ff" stroke-width="2"/>
+                    <line x1="250" y1="235" x2="215" y2="185" stroke="#00e5ff" stroke-width="2"/>
+                    
+                    <text x="40" y="290" fill="#e8eaf6" font-size="14">• Централизация</text>
+                    <text x="40" y="310" fill="#e8eaf6" font-size="14">• Платформы-владельцы</text>
+                    <text x="40" y="330" fill="#e8eaf6" font-size="14">• Монетизация данных</text>
+                    <text x="40" y="350" fill="#e8eaf6" font-size="14">• Контроль сверху</text>
+                    
+                    <rect x="430" y="50" width="350" height="320" fill="url(#grad1)" rx="15" stroke="#7c4dff" stroke-width="2"/>
+                    <text x="605" y="85" text-anchor="middle" fill="#7c4dff" font-size="24" font-weight="bold">WEB 3.0</text>
+                    
+                    <circle cx="560" cy="140" r="20" fill="#00e5ff" opacity="0.8"/>
+                    <circle cx="650" cy="140" r="20" fill="#00e5ff" opacity="0.8"/>
+                    <circle cx="560" cy="220" r="20" fill="#00e5ff" opacity="0.8"/>
+                    <circle cx="650" cy="220" r="20" fill="#00e5ff" opacity="0.8"/>
+                    <circle cx="605" cy="180" r="20" fill="#ff6e40" opacity="0.8"/>
+                    
+                    <line x1="575" y1="145" x2="635" y2="145" stroke="#7c4dff" stroke-width="2"/>
+                    <line x1="575" y1="215" x2="635" y2="215" stroke="#7c4dff" stroke-width="2"/>
+                    <line x1="565" y1="160" x2="565" y2="200" stroke="#7c4dff" stroke-width="2"/>
+                    <line x1="645" y1="160" x2="645" y2="200" stroke="#7c4dff" stroke-width="2"/>
+                    <line x1="575" y1="155" x2="595" y2="170" stroke="#7c4dff" stroke-width="2"/>
+                    <line x1="635" y1="155" x2="615" y2="170" stroke="#7c4dff" stroke-width="2"/>
+                    <line x1="575" y1="205" x2="595" y2="190" stroke="#7c4dff" stroke-width="2"/>
+                    <line x1="635" y1="205" x2="615" y2="190" stroke="#7c4dff" stroke-width="2"/>
+                    
+                    <text x="450" y="290" fill="#e8eaf6" font-size="14">• Децентрализация</text>
+                    <text x="450" y="310" fill="#e8eaf6" font-size="14">• Блокчейн</text>
+                    <text x="450" y="330" fill="#e8eaf6" font-size="14">• Владение данными</text>
+                    <text x="450" y="350" fill="#e8eaf6" font-size="14">• Самоуправление</text>
+                </svg>
+            </div>
+            
+            <h3 class="subsection-title">1.2. Web 3.0: Следующий эволюционный этап</h3>
+            <p class="content-text">
+                Концепция <strong>Web 3.0</strong> (или Семантический/Децентрализованный Веб) представляет собой следующий эволюционный этап Интернета, направленный на решение проблем централизации и прозрачности, присущих текущим платформам.
+            </p>
+            
+            <p class="content-text"><strong>Ключевые технологические тренды Web 3.0:</strong></p>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Тренд</th>
+                        <th>Описание</th>
+                        <th>Значение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Децентрализация (Blockchain)</td>
+                        <td>Использование распределенных реестров для обеспечения прозрачности и неизменности данных.</td>
+                        <td>Основа для децентрализованных приложений (DApps).</td>
+                    </tr>
+                    <tr>
+                        <td>Семантическая паутина</td>
+                        <td>Придание данным четко определенного значения, что позволяет машинам понимать и обрабатывать информацию.</td>
+                        <td>Обеспечение логического вывода для ИИ.</td>
+                    </tr>
+                    <tr>
+                        <td>Иммерсивность (Metaverse/AR/VR)</td>
+                        <td>Интеграция физического и виртуального миров в трехмерные цифровые пространства.</td>
+                        <td>Создание нового пользовательского опыта.</td>
+                    </tr>
+                    <tr>
+                        <td>Цифровая идентичность и владение (NFTs/SSI)</td>
+                        <td>Предоставление пользователям полного контроля над своими цифровыми активами и данными.</td>
+                        <td>Решение проблемы владения данными.</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- Statistics Section -->
+            <div class="stats-container">
+                <div class="stat-box">
+                    <span class="stat-number">5B+</span>
+                    <span class="stat-label">Пользователей Интернета</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">$3T</span>
+                    <span class="stat-label">Цифровая экономика</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">75%</span>
+                    <span class="stat-label">Рост IoT устройств</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">2030</span>
+                    <span class="stat-label">Год полного Web 3.0</span>
+                </div>
+            </div>
+            
+            <div class="expert-quote">
+                Переход к Web 3.0 — это не просто технологическая эволюция, это философская революция в понимании того, кому принадлежит Интернет и кто контролирует цифровую жизнь миллиардов людей.
+            </div>
+            
+            <h3 class="subsection-title">1.3. Эволюция веба: временная шкала</h3>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4 style="color: var(--accent-cyan); font-family: var(--font-display); margin-bottom: 0.5rem;">Web 1.0 (1990-2004)</h4>
+                        <p style="color: var(--text-light);">Статические страницы, только чтение информации. Эра «Read-Only».</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4 style="color: var(--accent-cyan); font-family: var(--font-display); margin-bottom: 0.5rem;">Web 2.0 (2004-2020)</h4>
+                        <p style="color: var(--text-light);">Социальные сети, пользовательский контент. Эра «Read-Write», но данные контролируются платформами.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4 style="color: var(--accent-cyan); font-family: var(--font-display); margin-bottom: 0.5rem;">Web 3.0 (2020+)</h4>
+                        <p style="color: var(--text-light);">Децентрализация, блокчейн, владение данными. Эра «Read-Write-Own».</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+            </div>
+            
+            <p class="content-text">
+                <a href="https://ethereum.org/en/developers/docs/web2-vs-web3/" class="reference-link" target="_blank">Подробное сравнение Web 2.0 vs Web 3.0 (Ethereum.org)</a>
+            </p>
+        </section>
+
+        <!-- ==================== SECTION 2 ==================== -->
+        <section id="section2" class="content-section">
+            <h2 class="section-header">Раздел 2: Семантическая паутина (Semantic Web)</h2>
+            
+            <h3 class="subsection-title">2.1. Концепция Семантической паутины</h3>
+            <p class="content-text">
+                Семантическая паутина, предложенная <strong>Тимом Бернерсом-Ли</strong>, является расширением существующего Интернета, где информация имеет четко определенное значение, что позволяет компьютерам лучше сотрудничать с людьми в обработке данных.
+            </p>
+            
+            <p class="content-text">
+                <strong>Основная цель:</strong> Трансформировать неструктурированные данные в структурированные, машиночитаемые форматы.
+            </p>
+            
+            <p class="content-text"><strong>Стандартизированные технологии:</strong></p>
+            <ul class="styled-list">
+                <li><strong>RDF (Resource Description Framework):</strong> Базовый стандарт для представления информации в виде триплетов (субъект-предикат-объект).</li>
+                <li><strong>OWL (Web Ontology Language):</strong> Язык для определения онтологий, позволяющий машинам делать логические выводы о данных.</li>
+                <li><strong>SPARQL:</strong> Язык запросов для RDF-данных.</li>
+            </ul>
+            
+            <!-- Media Element 2: RDF Triple Structure -->
+            <div class="visual-diagram" id="diagram2" style="margin: 3rem 0; padding: 2rem; background: linear-gradient(135deg, rgba(26, 35, 126, 0.1), rgba(124, 77, 255, 0.1)); border: 2px solid var(--border-glow); border-radius: 16px; backdrop-filter: blur(10px);">
+                <h4 style="text-align: center; color: var(--accent-cyan); font-family: var(--font-display); margin-bottom: 2rem;">
+                    Структура триплета RDF
+                </h4>
+                
+                <svg viewBox="0 0 800 250" style="width: 100%; height: auto; filter: drop-shadow(0 4px 20px rgba(0, 229, 255, 0.2));">
+                    <defs>
+                        <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#00e5ff;stop-opacity:0.2" />
+                            <stop offset="100%" style="stop-color:#7c4dff;stop-opacity:0.2" />
+                        </linearGradient>
+                        <marker id="arrowhead2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#00e5ff" />
+                        </marker>
+                    </defs>
+                    
+                    <rect x="50" y="80" width="180" height="90" fill="url(#grad2)" rx="10" stroke="#00e5ff" stroke-width="3"/>
+                    <text x="140" y="115" text-anchor="middle" fill="#00e5ff" font-size="18" font-weight="bold">СУБЪЕКТ</text>
+                    <text x="140" y="140" text-anchor="middle" fill="#e8eaf6" font-size="16">(Subject)</text>
+                    <text x="140" y="160" text-anchor="middle" fill="#9fa8da" font-size="14" font-style="italic">Альхасан</text>
+                    
+                    <line x1="230" y1="125" x2="320" y2="125" stroke="#00e5ff" stroke-width="3" marker-end="url(#arrowhead2)"/>
+                    
+                    <rect x="320" y="80" width="180" height="90" fill="url(#grad2)" rx="10" stroke="#7c4dff" stroke-width="3"/>
+                    <text x="410" y="115" text-anchor="middle" fill="#7c4dff" font-size="18" font-weight="bold">ПРЕДИКАТ</text>
+                    <text x="410" y="140" text-anchor="middle" fill="#e8eaf6" font-size="16">(Predicate)</text>
+                    <text x="410" y="160" text-anchor="middle" fill="#9fa8da" font-size="14" font-style="italic">является автором</text>
+                    
+                    <line x1="500" y1="125" x2="590" y2="125" stroke="#00e5ff" stroke-width="3" marker-end="url(#arrowhead2)"/>
+                    
+                    <rect x="590" y="80" width="180" height="90" fill="url(#grad2)" rx="10" stroke="#ff6e40" stroke-width="3"/>
+                    <text x="680" y="115" text-anchor="middle" fill="#ff6e40" font-size="18" font-weight="bold">ОБЪЕКТ</text>
+                    <text x="680" y="140" text-anchor="middle" fill="#e8eaf6" font-size="16">(Object)</text>
+                    <text x="680" y="160" text-anchor="middle" fill="#9fa8da" font-size="14" font-style="italic">Лонгрида</text>
+                    
+                    <text x="400" y="220" text-anchor="middle" fill="#e8eaf6" font-size="15">
+                        Пример: (Альхасан) - (является автором) - (Лонгрида)
+                    </text>
+                </svg>
+            </div>
+            
+            <p class="content-text">
+                <a href="https://www.scientificamerican.com/article/the-semantic-web/" class="reference-link" target="_blank">Оригинальная статья Тима Бернерса-Ли о Семантической паутине (Scientific American)</a>
+            </p>
+            
+            <h3 class="subsection-title">2.2. Роль Семантической верстки (Semantic Markup)</h3>
+            <p class="content-text">
+                Семантическая верстка — это практический мост между Web 2.0 и Web 3.0. Она включает использование специальных тегов и атрибутов в HTML-коде, которые добавляют метаданные, понятные поисковым системам и другим машинам.
+            </p>
+            
+            <p class="content-text">
+                <strong>Ключевой инструмент: Schema.org</strong><br>
+                Совместная инициатива крупнейших поисковых систем, предоставляющая набор словарей (микроданных) для разметки контента.
+            </p>
+            
+            <div class="expert-quote">
+                <strong>Практический пример:</strong> Вместо простого отображения "Цена: 1000 риалов", семантическая верстка позволяет явно указать: 
+                <code>&lt;span itemprop="price" content="1000"&gt;1000&lt;/span&gt; &lt;span itemprop="priceCurrency"&gt;SAR&lt;/span&gt;</code>. 
+                Это гарантирует, что поисковые роботы точно знают, что 1000 — это цена, что критически важно для формирования расширенных сниппетов и работы ИИ-агентов.
+            </div>
+            
+            <!-- Media Element 3: Schema.org Visual Example -->
+            <div class="visual-diagram" id="diagram-schema" style="margin: 3rem 0; padding: 2rem; background: linear-gradient(135deg, rgba(26, 35, 126, 0.1), rgba(124, 77, 255, 0.1)); border: 2px solid var(--border-glow); border-radius: 16px; backdrop-filter: blur(10px);">
+                <h4 style="text-align: center; color: var(--accent-cyan); font-family: var(--font-display); margin-bottom: 2rem;">
+                    Schema.org: Расширенные сниппеты
+                </h4>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                    <div style="background: rgba(26, 35, 126, 0.2); padding: 2rem; border-radius: 12px; border: 2px solid #ff6e40;">
+                        <h5 style="color: #ff6e40; margin-bottom: 1rem; text-align: center; font-family: var(--font-display);">❌ БЕЗ Schema.org</h5>
+                        <div style="background: white; padding: 1rem; border-radius: 8px; color: black;">
+                            <div style="color: #1a0dab; font-size: 18px; margin-bottom: 5px;">Ноутбук для работы</div>
+                            <div style="color: #006621; font-size: 14px; margin-bottom: 5px;">example.com</div>
+                            <div style="color: #545454; font-size: 13px;">Продаем качественные ноутбуки. Цена 50000 руб. Доставка по всей России.</div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(124, 77, 255, 0.2); padding: 2rem; border-radius: 12px; border: 2px solid #00e5ff;">
+                        <h5 style="color: #00e5ff; margin-bottom: 1rem; text-align: center; font-family: var(--font-display);">✅ С Schema.org</h5>
+                        <div style="background: white; padding: 1rem; border-radius: 8px; color: black;">
+                            <div style="color: #1a0dab; font-size: 18px; margin-bottom: 5px;">Ноутбук для работы</div>
+                            <div style="color: #006621; font-size: 14px; margin-bottom: 8px;">example.com</div>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                                <span style="color: #ffa000; font-size: 16px;">★★★★★</span>
+                                <span style="color: #70757a; font-size: 12px;">4.8 (245 отзывов)</span>
+                            </div>
+                            <div style="color: #d93025; font-size: 20px; font-weight: bold; margin-bottom: 5px;">50 000 ₽</div>
+                            <div style="color: #188038; font-size: 13px; margin-bottom: 5px;">✓ В наличии | Доставка: 2-3 дня</div>
+                            <div style="color: #545454; font-size: 13px;">Профессиональный ноутбук. Intel Core i7, 16GB RAM, 512GB SSD.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p style="text-align: center; color: #9fa8da; font-size: 14px; margin-top: 2rem; font-style: italic;">
+                    Семантическая разметка позволяет поисковым системам понимать структуру данных и отображать расширенные результаты
+                </p>
+            </div>
+            
+            <p class="content-text">
+                <a href="https://schema.org/" class="reference-link" target="_blank">Официальный сайт Schema.org</a>
+                <a href="https://developers.google.com/search/docs/appearance/structured-data" class="reference-link" target="_blank">Документация Google по структурированным данным</a>
+            </p>
+            
+            <h3 class="subsection-title">2.3. Текущее состояние и перспективы</h3>
+            <p class="content-text">
+                Несмотря на то, что полная реализация Семантической паутины еще не достигнута, ее элементы активно используются:
+            </p>
+            
+            <ul class="styled-list">
+                <li><strong>Поисковые системы:</strong> Используют семантическую верстку для улучшения релевантности результатов и создания "Графов знаний" (Knowledge Graphs).</li>
+                <li><strong>Искусственный интеллект:</strong> Онтологии и RDF используются для обучения ИИ-моделей и создания экспертных систем, способных к логическому выводу.</li>
+                <li><strong>Интеграция данных:</strong> Семантические технологии облегчают интеграцию разнородных данных в корпоративных системах и в рамках концепции IIoT.</li>
+            </ul>
+            
+            <h3 class="subsection-title">2.4. Технологии Семантической паутины (детально)</h3>
+            
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span class="accordion-title">RDF (Resource Description Framework)</span>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <p class="content-text">
+                        RDF — это базовая модель данных для Семантической паутины. Информация представляется в виде триплетов (субъект-предикат-объект), что позволяет описывать отношения между любыми ресурсами в Интернете. Например: (Книга "1984" - написана автором - Джордж Оруэлл).
+                    </p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span class="accordion-title">OWL (Web Ontology Language)</span>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <p class="content-text">
+                        OWL используется для создания онтологий — формальных описаний знаний в определенной предметной области. Позволяет машинам делать логические выводы. Например, если "человек" является подклассом "млекопитающее", то все свойства млекопитающих автоматически применяются к человеку.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span class="accordion-title">SPARQL (SPARQL Protocol and RDF Query Language)</span>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <p class="content-text">
+                        SPARQL — это язык запросов для работы с RDF-данными, похожий на SQL для баз данных. Позволяет извлекать информацию из распределенных источников Семантической паутины, делая сложные запросы по связанным данным.
+                    </p>
+                </div>
+            </div>
+            
+            <p class="content-text">
+                В контексте Web 3.0, Семантическая паутина будет интегрирована с технологиями блокчейна, позволяя не только понимать данные, но и верифицировать их происхождение и право собственности, что является основой для создания по-настоящему интеллектуальных и доверенных децентрализованных приложений.
+            </p>
+        </section>
+
+        <!-- ==================== SECTION 3 ==================== -->
+        <section id="section3" class="content-section">
+            <h2 class="section-header">Раздел 3: Децентрализованные социальные сети (DeSo)</h2>
+            
+            <h3 class="subsection-title">3.1. Проблемы текущего состояния социальных сетей (Web 2.0)</h3>
+            <p class="content-text">
+                Сектор социальных сетей доминируется крупными централизованными платформами (Web 2.0), которые предоставляют бесплатные услуги в обмен на пользовательские данные.
+            </p>
+            
+            <p class="content-text"><strong>Основные проблемы:</strong></p>
+            <ul class="styled-list">
+                <li><strong>Централизация и цензура:</strong> Контроль над контентом осуществляется одной корпорацией.</li>
+                <li><strong>Эксплуатация данных:</strong> Пользователи не владеют своими данными и не получают выгоды от их монетизации.</li>
+                <li><strong>Алгоритмическая непрозрачность:</strong> Формирование лент новостей закрытыми алгоритмами, что приводит к «информационным пузырям».</li>
+            </ul>
+            
+            <p class="content-text">
+                <a href="https://www.ted.com/talks/eli_pariser_beware_online_filter_bubbles" class="reference-link" target="_blank">TED Talk: Опасайтесь онлайн-фильтр-пузырей (Эли Паризер)</a>
+            </p>
+            
+            <h3 class="subsection-title">3.2. Применение технологий Web 3.0 в социальных сетях</h3>
+            <p class="content-text">
+                Концепция <strong>Децентрализованных Социальных Сетей (DeSo)</strong> предлагает решение этих проблем:
+            </p>
+            
+            <ul class="styled-list">
+                <li><strong>Блокчейн и Цифровая Идентичность (SSI):</strong> Блокчейн используется для хранения цифровой идентичности пользователя (Self-Sovereign Identity) и метаданных о контенте. Пользователь владеет своим профилем и может переносить его между платформами.</li>
+                <li><strong>Токеномика:</strong> Введение криптовалютных токенов для монетизации вклада пользователя (создание контента, модерация) и более справедливого распределения доходов от рекламы.</li>
+                <li><strong>Децентрализованное хранение:</strong> Контент хранится в распределенных файловых системах (например, IPFS), что исключает возможность единовременного удаления.</li>
+            </ul>
+            
+            <!-- Media Element 4: Data Ownership Comparison -->
+            <div class="visual-diagram" id="diagram3" style="margin: 3rem 0; padding: 2rem; background: linear-gradient(135deg, rgba(26, 35, 126, 0.1), rgba(124, 77, 255, 0.1)); border: 2px solid var(--border-glow); border-radius: 16px; backdrop-filter: blur(10px);">
+                <h4 style="text-align: center; color: var(--accent-cyan); font-family: var(--font-display); margin-bottom: 2rem;">
+                    Модель владения данными: Web 2.0 vs DeSo
+                </h4>
+                
+                <svg viewBox="0 0 800 350" style="width: 100%; height: auto; filter: drop-shadow(0 4px 20px rgba(0, 229, 255, 0.2));">
+                    <defs>
+                        <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#ff6e40" />
+                        </marker>
+                        <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#00e5ff" />
+                        </marker>
+                    </defs>
+                    
+                    <text x="200" y="40" text-anchor="middle" fill="#ff6e40" font-size="22" font-weight="bold">Web 2.0 - Централизация</text>
+                    
+                    <circle cx="80" cy="120" r="25" fill="#9fa8da" opacity="0.8" stroke="#00e5ff" stroke-width="2"/>
+                    <text x="80" y="128" text-anchor="middle" fill="white" font-size="12">USER</text>
+                    
+                    <circle cx="200" cy="120" r="25" fill="#9fa8da" opacity="0.8" stroke="#00e5ff" stroke-width="2"/>
+                    <text x="200" y="128" text-anchor="middle" fill="white" font-size="12">USER</text>
+                    
+                    <circle cx="320" cy="120" r="25" fill="#9fa8da" opacity="0.8" stroke="#00e5ff" stroke-width="2"/>
+                    <text x="320" y="128" text-anchor="middle" fill="white" font-size="12">USER</text>
+                    
+                    <line x1="95" y1="140" x2="180" y2="200" stroke="#ff6e40" stroke-width="3" marker-end="url(#arrow-red)"/>
+                    <line x1="200" y1="145" x2="200" y2="200" stroke="#ff6e40" stroke-width="3" marker-end="url(#arrow-red)"/>
+                    <line x1="305" y1="140" x2="220" y2="200" stroke="#ff6e40" stroke-width="3" marker-end="url(#arrow-red)"/>
+                    
+                    <rect x="150" y="210" width="100" height="80" fill="#ff6e40" opacity="0.8" rx="5" stroke="#ff6e40" stroke-width="2"/>
+                    <text x="200" y="240" text-anchor="middle" fill="white" font-size="14" font-weight="bold">СЕРВЕР</text>
+                    <text x="200" y="260" text-anchor="middle" fill="white" font-size="12">Компании</text>
+                    <text x="200" y="278" text-anchor="middle" fill="white" font-size="10">(владеет данными)</text>
+                    
+                    <text x="200" y="320" text-anchor="middle" fill="#ff6e40" font-size="13" font-weight="bold">❌ Данные НЕ принадлежат пользователю</text>
+                    
+                    <text x="600" y="40" text-anchor="middle" fill="#00e5ff" font-size="22" font-weight="bold">DeSo - Децентрализация</text>
+                    
+                    <circle cx="480" cy="120" r="25" fill="#00e5ff" opacity="0.8" stroke="#00e5ff" stroke-width="2"/>
+                    <text x="480" y="128" text-anchor="middle" fill="white" font-size="12">USER</text>
+                    
+                    <circle cx="600" cy="120" r="25" fill="#00e5ff" opacity="0.8" stroke="#00e5ff" stroke-width="2"/>
+                    <text x="600" y="128" text-anchor="middle" fill="white" font-size="12">USER</text>
+                    
+                    <circle cx="720" cy="120" r="25" fill="#00e5ff" opacity="0.8" stroke="#00e5ff" stroke-width="2"/>
+                    <text x="720" y="128" text-anchor="middle" fill="white" font-size="12">USER</text>
+                    
+                    <rect x="460" y="180" width="40" height="30" fill="#7c4dff" opacity="0.8" rx="3"/>
+                    <text x="480" y="200" text-anchor="middle" fill="white" font-size="10">🔐</text>
+                    
+                    <rect x="580" y="180" width="40" height="30" fill="#7c4dff" opacity="0.8" rx="3"/>
+                    <text x="600" y="200" text-anchor="middle" fill="white" font-size="10">🔐</text>
+                    
+                    <rect x="700" y="180" width="40" height="30" fill="#7c4dff" opacity="0.8" rx="3"/>
+                    <text x="720" y="200" text-anchor="middle" fill="white" font-size="10">🔐</text>
+                    
+                    <line x1="480" y1="145" x2="480" y2="175" stroke="#00e5ff" stroke-width="3" marker-end="url(#arrow-green)"/>
+                    <line x1="600" y1="145" x2="600" y2="175" stroke="#00e5ff" stroke-width="3" marker-end="url(#arrow-green)"/>
+                    <line x1="720" y1="145" x2="720" y2="175" stroke="#00e5ff" stroke-width="3" marker-end="url(#arrow-green)"/>
+                    
+                    <ellipse cx="600" cy="250" rx="150" ry="40" fill="none" stroke="#7c4dff" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="600" y="255" text-anchor="middle" fill="#7c4dff" font-size="14" font-weight="bold">БЛОКЧЕЙН</text>
+                    
+                    <text x="600" y="320" text-anchor="middle" fill="#00e5ff" font-size="13" font-weight="bold">✅ Данные принадлежат пользователю</text>
+                </svg>
+            </div>
+            
+            <h3 class="subsection-title">3.3. Наиболее влиятельные технологии для развития социальных сетей</h3>
+            <p class="content-text">
+                Для полного перехода к Web 3.0 в социальных сетях критически важны две технологии:
+            </p>
+            
+            <p class="content-text">
+                <strong>1. Технологии Децентрализованной Идентичности (SSI) на основе Блокчейна:</strong>
+            </p>
+            <p class="content-text">
+                <em>Обоснование:</em> Решают фундаментальную проблему Web 2.0 — отсутствие владения данными. Переход к SSI позволит пользователям контролировать доступ к своим социальным графам, повышая доверие.
+            </p>
+            
+            <p class="content-text">
+                <strong>2. Семантическая паутина и ИИ для контента:</strong>
+            </p>
+            <p class="content-text">
+                <em>Обоснование:</em> Внедрение семантической верстки и онтологий позволит ИИ-алгоритмам понимать <strong>смысл</strong> контента и <strong>отношения</strong> между пользователями. Это приведет к созданию более точных, релевантных и менее манипулятивных лент новостей, а также улучшит автоматическую модерацию, основанную на понимании контекста.
+            </p>
+            
+            <!-- Media Element 5: Embedded Video about Decentralized Identity -->
+            <div class="visual-diagram" id="video-section" style="margin: 3rem 0; padding: 2rem; background: linear-gradient(135deg, rgba(26, 35, 126, 0.1), rgba(124, 77, 255, 0.1)); border: 2px solid var(--border-glow); border-radius: 16px; backdrop-filter: blur(10px);">
+                <h4 style="text-align: center; color: var(--accent-cyan); font-family: var(--font-display); margin-bottom: 2rem;">
+                    Видео: Децентрализованная идентичность и Web 3.0
+                </h4>
+                
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 8px 32px rgba(0, 229, 255, 0.3);">
+                    <iframe 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+                        src="https://www.youtube.com/embed/1bzX9MI6YWI" 
+                        title="Видео о Web 3.0 и децентрализации (на русском)"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                
+                <p style="text-align: center; color: #9fa8da; font-size: 13px; margin-top: 1.5rem; font-style: italic;">
+                    Видео на русском языке объясняет концепцию Web 3.0, децентрализации и новых интернет-технологий
+                </p>
+            </div>
+            
+            <h3 class="subsection-title">3.4. Преимущества децентрализованных социальных сетей</h3>
+            
+            <div class="info-card">
+                <h4 class="info-card-title">🔐 Владение данными</h4>
+                <p class="content-text">
+                    Пользователь полностью контролирует свои данные через криптографические ключи. Никто не может удалить, изменить или монетизировать ваш контент без вашего разрешения.
+                </p>
+            </div>
+            
+            <div class="info-card">
+                <h4 class="info-card-title">💰 Справедливая монетизация</h4>
+                <p class="content-text">
+                    Создатели контента получают прямое вознаграждение через токены без посредников. Доходы от рекламы распределяются прозрачно между всеми участниками экосистемы.
+                </p>
+            </div>
+            
+            <div class="info-card">
+                <h4 class="info-card-title">🌐 Портативность профиля</h4>
+                <p class="content-text">
+                    Ваша цифровая идентичность не привязана к одной платформе. Вы можете переносить свой профиль, подписчиков и репутацию между различными децентрализованными приложениями.
+                </p>
+            </div>
+            
+            <div class="info-card">
+                <h4 class="info-card-title">🛡️ Устойчивость к цензуре</h4>
+                <p class="content-text">
+                    Отсутствие центрального органа означает, что контент не может быть удален по решению одной компании. Модерация осуществляется децентрализованно через механизмы голосования сообщества.
+                </p>
+            </div>
+            
+            <p class="content-text">
+                <a href="https://www.lifewithalacrity.com/articles/the-path-to-self-sovereign-identity/" class="reference-link" target="_blank">Путь к самосуверенной идентичности (10 принципов Кристофера Аллена)</a>
+                <a href="https://identity.foundation/" class="reference-link" target="_blank">Decentralized Identity Foundation</a>
+            </p>
+            
+            <!-- Additional Diagram: Technology Stack -->
+            <div class="visual-diagram" id="diagram-stack" style="margin: 4rem 0; padding: 2rem; background: linear-gradient(135deg, rgba(26, 35, 126, 0.1), rgba(124, 77, 255, 0.1)); border: 2px solid var(--border-glow); border-radius: 16px; backdrop-filter: blur(10px);">
+                <h4 style="text-align: center; color: var(--accent-cyan); font-family: var(--font-display); margin-bottom: 2rem;">
+                    Технологический стек Web 3.0
+                </h4>
+                
+                <svg viewBox="0 0 800 400" style="width: 100%; height: auto; filter: drop-shadow(0 4px 20px rgba(0, 229, 255, 0.2));">
+                    <rect x="100" y="320" width="600" height="60" fill="#1a237e" opacity="0.9" rx="8" stroke="#00e5ff" stroke-width="2"/>
+                    <text x="400" y="340" text-anchor="middle" fill="#00e5ff" font-size="16" font-weight="bold">Уровень 1: Инфраструктура</text>
+                    <text x="400" y="360" text-anchor="middle" fill="#e8eaf6" font-size="13">Blockchain | IPFS | P2P Networks</text>
+                    
+                    <rect x="120" y="240" width="560" height="60" fill="#7c4dff" opacity="0.8" rx="8" stroke="#7c4dff" stroke-width="2"/>
+                    <text x="400" y="260" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Уровень 2: Протоколы</text>
+                    <text x="400" y="280" text-anchor="middle" fill="#e8eaf6" font-size="13">RDF | OWL | SPARQL | Smart Contracts</text>
+                    
+                    <rect x="140" y="160" width="520" height="60" fill="#ff6e40" opacity="0.8" rx="8" stroke="#ff6e40" stroke-width="2"/>
+                    <text x="400" y="180" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Уровень 3: Идентичность и Данные</text>
+                    <text x="400" y="200" text-anchor="middle" fill="#e8eaf6" font-size="13">SSI | DID | Semantic Web | NFT</text>
+                    
+                    <rect x="160" y="80" width="480" height="60" fill="#00e5ff" opacity="0.8" rx="8" stroke="#00e5ff" stroke-width="2"/>
+                    <text x="400" y="100" text-anchor="middle" fill="#0a0e27" font-size="16" font-weight="bold">Уровень 4: Приложения</text>
+                    <text x="400" y="120" text-anchor="middle" fill="#0a0e27" font-size="13">DeSo | DeFi | DAOs | dApps</text>
+                    
+                    <circle cx="400" cy="35" r="25" fill="#7c4dff" opacity="0.8" stroke="#00e5ff" stroke-width="2"/>
+                    <text x="400" y="43" text-anchor="middle" fill="white" font-size="14" font-weight="bold">USER</text>
+                </svg>
+                
+                <p style="text-align: center; color: #9fa8da; font-size: 14px; margin-top: 2rem; font-style: italic;">
+                    Многоуровневая архитектура Web 3.0: от базовой инфраструктуры до пользовательских приложений
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================== CONCLUSION ==================== -->
+        <section id="conclusion" class="conclusion-section">
+            <h2 class="conclusion-title">Заключение: Будущее доверия и смысла</h2>
+            
+            <p class="content-text">
+                Данный лонгрид показал, что эволюция интернет-технологий движется к <strong>децентрализованной, интеллектуальной и иммерсивной</strong> модели (Web 3.0), где ценность смещается от централизации к владению пользователем и прозрачности.
+            </p>
+            
+            <p class="content-text"><strong>Основные выводы:</strong></p>
+            
+            <ul class="key-takeaways">
+                <li>
+                    <strong>1. Технологическая конвергенция:</strong>
+                    ИИ, IoT и высокоскоростные сети являются инфраструктурой для глобальной цифровой трансформации.
+                </li>
+                <li>
+                    <strong>2. Семантическая паутина как основа интеллекта:</strong>
+                    Семантическая паутина обеспечивает машинное понимание данных, что критически важно для работы сложных ИИ-агентов.
+                </li>
+                <li>
+                    <strong>3. Трансформация социальных сетей:</strong>
+                    Сектор движется к децентрализации для решения проблем конфиденциальности и централизованного контроля.
+                </li>
+            </ul>
+            
+            <div class="expert-quote">
+                <strong>Наиболее важные технологии для социальных сетей:</strong><br><br>
+                Сочетание <strong>Децентрализованной Идентичности</strong> и <strong>Семантической паутины</strong> определит будущее социальных сетей. Децентрализованная Идентичность обеспечивает необходимую доверенную инфраструктуру, а Семантическая паутина — интеллектуальную надстройку, позволяющую алгоритмам понимать контент. Только сочетание этих двух направлений позволит социальным сетям перейти от модели Web 2.0, основанной на эксплуатации данных, к модели Web 3.0, основанной на владении и смысле.
+            </div>
+            
+            <p class="content-text">
+                <a href="https://arxiv.org/abs/1908.00462" class="reference-link" target="_blank">Академическое исследование: Интеграция блокчейна и Семантической паутины</a>
+            </p>
+        </section>
+
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <p class="footer-text">
+            Лонгрид подготовлен в рамках лабораторной работы №2 по дисциплине «Интернет-технологии»
+        </p>
+        <p class="footer-text">
+            <span class="footer-author">Студент: Альхасан Хасан (Альхасан Х.) | Группа: ИДМ-25-04</span>
+        </p>
+        <p class="footer-text">
+            МГТУ «СТАНКИН» | Институт информационных технологий | 2025
+        </p>
+    </footer>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ========== READING PROGRESS BAR ==========
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // ========== BACK TO TOP BUTTON ==========
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // ========== ACCORDION FUNCTIONALITY ==========
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+        
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const accordionItem = header.parentElement;
+                const isActive = accordionItem.classList.contains('active');
+                
+                // Close all accordion items
+                document.querySelectorAll('.accordion-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Open clicked item if it was closed
+                if (!isActive) {
+                    accordionItem.classList.add('active');
+                }
+            });
+        });
+
+        // ========== SMOOTH SCROLL FOR TOC LINKS ==========
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ========== INTERSECTION OBSERVER FOR FADE-IN ANIMATIONS ==========
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all content sections
+        document.querySelectorAll('.content-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // ========== ANIMATED COUNTER FOR STATISTICS ==========
+        const animateCounter = (element, target, duration = 2000) => {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(start);
+                }
+            }, 16);
+        };
+
+        // Trigger counter animation when stats are visible
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                    entry.target.classList.add('counted');
+                    const statNumbers = entry.target.querySelectorAll('.stat-number');
+                    
+                    // Note: These are just for animation effect with the text content
+                    setTimeout(() => {
+                        statNumbers.forEach(stat => {
+                            stat.style.animation = 'pulse 1s ease-in-out';
+                        });
+                    }, 200);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const statsContainer = document.querySelector('.stats-container');
+        if (statsContainer) {
+            statsObserver.observe(statsContainer);
+        }
+
+        // ========== KEYBOARD NAVIGATION ==========
+        document.addEventListener('keydown', (e) => {
+            // ESC key to scroll to top
+            if (e.key === 'Escape') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // ========== CONSOLE MESSAGE ==========
+        console.log('%c🚀 Web 3.0 Лонгрид | МГТУ СТАНКИН', 'color: #00e5ff; font-size: 20px; font-weight: bold;');
+        console.log('%cСтудент: Альхасан Хасан | Группа: ИДМ-25-04', 'color: #7c4dff; font-size: 14px;');
+    </script>
+
+</body>
+</html>
